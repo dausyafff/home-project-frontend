@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseUrl: "http://localhost:8080/api",
+  baseURL: "http://localhost:8080/api",
 });
 
 // interceptor - otomatis sisipkan token disetiap request
@@ -12,3 +12,5 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+export default api;
