@@ -1,29 +1,30 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import api from '../api/axios'
 import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
-    // useState — menyimpan data form yang bisa berubah
     const [email, setEmail]       = useState('')
     const [password, setPassword] = useState('')
     const [error, setError]       = useState(null)
     const [loading, setLoading]   = useState(false)
 
-    const { login }  = useAuth()
-    const navigate   = useNavigate()
+    const { login, token } = useAuth()
+    const navigate         = useNavigate()
+
+    // Kalau sudah login → redirect ke home
+    if (token) return <Navigate to="/" replace />
 
     const handleSubmit = async (e) => {
-        e.preventDefault() // cegah browser reload halaman
+        e.preventDefault()
         setLoading(true)
         setError(null)
 
         try {
-            const response = await api.post('/login', { email, password })
-            const { data } = response.data // ingat format response kita: { success, message, data }
-
-            login(data.user, data.token)   // simpan ke context + localStorage
-            navigate('/')                  // redirect ke home
+            const response   = await api.post('/login', { email, password })
+            const { data }   = response.data
+            login(data.user, data.token)
+            navigate('/')
         } catch (err) {
             setError(err.response?.data?.message || 'Login gagal')
         } finally {
@@ -35,9 +36,7 @@ export default function Login() {
         <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
             <h2>Login</h2>
 
-            {error && (
-                <p style={{ color: 'red' }}>{error}</p>
-            )}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
 
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '1rem' }}>
