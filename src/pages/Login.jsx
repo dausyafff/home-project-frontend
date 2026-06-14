@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, Navigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import api from '../api/axios'
 import { useAuth } from '../context/AuthContext'
 
@@ -9,11 +9,8 @@ export default function Login() {
     const [error, setError]       = useState(null)
     const [loading, setLoading]   = useState(false)
 
-    const { login, token } = useAuth()
-    const navigate         = useNavigate()
-
-    // Kalau sudah login → redirect ke home
-    if (token) return <Navigate to="/" replace />
+    const { login }  = useAuth()
+    const navigate   = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -21,8 +18,8 @@ export default function Login() {
         setError(null)
 
         try {
-            const response   = await api.post('/login', { email, password })
-            const { data }   = response.data
+            const response = await api.post('/login', { email, password })
+            const { data } = response.data
             login(data.user, data.token)
             navigate('/')
         } catch (err) {
@@ -33,34 +30,58 @@ export default function Login() {
     }
 
     return (
-        <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
-            <h2>Login</h2>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 w-full max-w-md">
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Login</h2>
+                <p className="text-gray-500 text-sm mb-6">
+                    Masuk untuk mengelola portfolio kamu
+                </p>
 
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>Email</label><br />
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={{ width: '100%', padding: '0.5rem' }}
-                    />
-                </div>
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>Password</label><br />
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        style={{ width: '100%', padding: '0.5rem' }}
-                    />
-                </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Loading...' : 'Login'}
-                </button>
-            </form>
+                {error && (
+                    <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4 text-sm">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="dausyaf@gmail.com"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="••••••••"
+                            required
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white py-2 rounded-lg font-medium transition-colors">
+                        {loading ? 'Loading...' : 'Login'}
+                    </button>
+                </form>
+
+            </div>
         </div>
     )
 }
