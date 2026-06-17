@@ -1,10 +1,15 @@
+import { Link } from 'react-router-dom';
 export default function ProjectCard({ project, onEdit, onDelete, isAdmin }) {
     return (
         <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
 
             {/* Header */}
             <div className="flex items-start justify-between mb-3">
-                <h3 className="font-semibold text-gray-800">{project.title}</h3>
+                <Link to={`/projects/${project.slug}`}>
+                    <h3 className="font-semibold text-gray-800 hover:text-blue-500 transition-colors cursor-pointer">
+                        {project.title}
+                    </h3>
+                </Link>
                 {project.is_featured && (
                     <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">
                         Featured

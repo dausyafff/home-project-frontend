@@ -4,8 +4,11 @@ import Navbar from './components/Navbar'
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
+import ProjectDetail from './pages/ProjectDetail'
 import Login from './pages/Login'
-import Dashboard from "./pages/Dashboard"
+import Register from './pages/Register'
+import Dashboard from './pages/Dashboard'
+import NotFound from './pages/NotFound'
 
 export default function App() {
     return (
@@ -14,16 +17,21 @@ export default function App() {
                 <Navbar />
                 <Routes>
                     {/* Public */}
-                    <Route path="/"         element={<Home />} />
-                    <Route path="/projects" element={<Projects />} />
-                    <Route path="/login"    element={<Login />} />
+                    <Route path="/"                  element={<Home />} />
+                    <Route path="/projects"          element={<Projects />} />
+                    <Route path="/projects/:slug"    element={<ProjectDetail />} />
+                    <Route path="/login"             element={<Login />} />
+                    <Route path="/register"          element={<Register />} />
 
-                    {/* Protected — hanya bisa diakses kalau sudah login */}
+                    {/* Protected */}
                     <Route path="/dashboard" element={
                         <ProtectedRoute>
                             <Dashboard />
                         </ProtectedRoute>
                     } />
+
+                    {/* 404 */}
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
         </AuthProvider>

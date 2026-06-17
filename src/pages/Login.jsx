@@ -80,7 +80,12 @@ export default function Login() {
                         {loading ? 'Loading...' : 'Login'}
                     </button>
                 </form>
-
+                <p className="text-center text-sm text-gray-500 mt-4">
+                    Belum punya akun?{' '}
+                    <Link to="/register" className="text-blue-500 hover:underline">
+                        Daftar
+                    </Link>
+                </p>
             </div>
         </div>
     )

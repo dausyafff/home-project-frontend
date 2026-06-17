@@ -77,8 +77,8 @@ export default function Home() {
                                 Available for work 🟢
                             </div>
                             <h1 className="text-5xl font-bold text-gray-800 mb-4 leading-tight">
-                                Halo, saya{' '}
-                                <span className="text-blue-500">Dausyaf</span> 👋
+                                Halo, Semuanya{' '} 👋
+                                {/* <span className="text-blue-500">Dausyaf</span>  */}
                             </h1>
                             <p className="text-xl text-gray-500 mb-8 max-w-xl mx-auto">
                                 Laravel & React Developer berbasis di Surabaya,
