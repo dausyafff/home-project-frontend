@@ -11,6 +11,13 @@ export default function Login() {
 
     const { login }  = useAuth()
     const navigate   = useNavigate()
+    const [searchParams] = useSearchParams()
+    // Cek kalau ada pesan expired dari interceptor
+    useEffect(() => {
+        if (searchParams.get('expired') === 'true') {
+            setError('Sesi login Anda telah berakhir. Silakan login kembali.')
+        }
+    }, [searchParams])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
