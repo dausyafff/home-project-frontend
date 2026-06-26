@@ -19,6 +19,8 @@ export default function Dashboard() {
         title: '', description: '', tech_stack: '',
         github_url: '', live_url: '', status: 'active', is_featured: false
     })
+    const [thumbnailFile, setThumbnailFile] = useState(null)
+    const [thumbnailPreview, setThumbnailPreview] = useState(null)
 
     // ── State Skills ──────────────────────────────────────
     const [skills, setSkills]           = useState([])
@@ -95,33 +97,56 @@ export default function Dashboard() {
     }
 
     const handleSubmitProject = async (e) => {
-        e.preventDefault()
-        setSubmitting(true)
+    e.preventDefault()
+    setSubmitting(true)
 
-        const payload = {
-            ...form,
-            tech_stack: form.tech_stack
-                ? form.tech_stack.split(',').map(t => t.trim()).filter(Boolean)
-                : [],
-        }
+    // FormData — wajib dipakai kalau ada file
+    const formData = new FormData()
+    formData.append('title', form.title)
+    formData.append('description', form.description)
+    formData.append('github_url', form.github_url || '')
+    formData.append('live_url', form.live_url || '')
+    formData.append('status', form.status)
+    formData.append('is_featured', form.is_featured ? '1' : '0')
 
-        try {
-            if (editProject) {
-                await api.put(`/projects/${editProject.id}`, payload)
-                showMessage('Project berhasil diupdate!')
-            } else {
-                await api.post('/projects', payload)
-                showMessage('Project berhasil dibuat!')
-            }
-            resetForm()
-            fetchProjects()
-        } catch (err) {
-            showMessage(err.response?.data?.message || 'Terjadi kesalahan')
-        } finally {
-            setSubmitting(false)
-        }
+    // tech_stack array — harus di-loop, FormData tidak terima array langsung
+    const techArray = form.tech_stack
+        ? form.tech_stack.split(',').map(t => t.trim()).filter(Boolean)
+        : []
+    techArray.forEach((tech, index) => {
+        formData.append(`tech_stack[${index}]`, tech)
+    })
+
+    // Hanya kirim thumbnail kalau user pilih file baru
+    if (thumbnailFile) {
+        formData.append('thumbnail', thumbnailFile)
     }
 
+    try {
+        if (editProject) {
+            // PENTING: Laravel tidak otomatis baca FormData untuk method PUT
+            // makanya kita "akali" dengan _method
+            formData.append('_method', 'PUT')
+            await api.post(`/projects/${editProject.id}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            showMessage('Project berhasil diupdate!')
+        } else {
+            await api.post('/projects', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            showMessage('Project berhasil dibuat!')
+        }
+        resetForm()
+        setThumbnailFile(null)
+        setThumbnailPreview(null)
+        fetchProjects()
+    } catch (err) {
+        showMessage(err.response?.data?.message || 'Terjadi kesalahan')
+    } finally {
+        setSubmitting(false)
+    }
+        }
     const handleDeleteProject = async (id) => {
         if (!window.confirm('Yakin mau hapus project ini?')) return
         try {
@@ -488,6 +513,33 @@ export default function Dashboard() {
                                                 Tampilkan di portfolio
                                             </label>
                                         </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            Thumbnail
+                                        </label>
+``
+                                        {/* Preview gambar kalau ada */}
+                                        {thumbnailPreview && (
+                                            <img src={thumbnailPreview} alt="Preview"
+                                                className="w-32 h-20 object-cover rounded-lg mb-2 border border-gray-200" />
+                                        )}
+
+                                        <input
+                                            type="file"
+                                            accept="image/jpeg,image/png,image/webp"
+                                            onChange={(e) => {
+                                                const file = e.target.files[0]
+                                                if (file) {
+                                                    setThumbnailFile(file)
+                                                    // Buat preview lokal sebelum upload — tidak perlu request ke server
+                                                    setThumbnailPreview(URL.createObjectURL(file))
+                                                }
+                                            }}
+                                            className="block w-full text-sm text-gray-600 border border-gray-300 rounded-lg cursor-pointer focus:outline-none"
+                                        />
+                                        <p className="text-xs text-gray-400 mt-1">Max 2MB. Format: JPG, PNG, WEBP</p>
                                     </div>
 
                                     <div className="flex gap-3">
