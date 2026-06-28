@@ -78,6 +78,8 @@ export default function Dashboard() {
         })
         setEditProject(null)
         setShowForm(false)
+        setThumbnailFile(null)
+        setThumbnailPreview(null)
     }
 
     const handleEdit = (project) => {
@@ -91,6 +93,10 @@ export default function Dashboard() {
             status:      project.status,
             is_featured: project.is_featured,
         })
+
+        setThumbnailPreview(project.thumbnail || null)
+        setThumbnailFile(null)
+        
         setShowForm(true)
         // scroll ke atas supaya form terlihat
         window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -288,6 +294,47 @@ export default function Dashboard() {
                                     {editProject ? 'Edit Project' : 'Tambah Project Baru'}
                                 </h2>
                                 <form onSubmit={handleSubmitProject} className="space-y-4">
+                                    <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+            Thumbnail Project
+        </label>
+        <div className="flex items-start gap-4">
+            <div className="w-32 h-24 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 flex-shrink-0">
+                {thumbnailPreview ? (
+                    <img src={thumbnailPreview} alt="Preview" className="w-full h-full object-cover" />
+                ) : (
+                    <span className="text-gray-400 text-xs text-center px-2">Belum ada gambar</span>
+                )}
+            </div>
+            <div className="flex-1">
+                <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={(e) => {
+                        const file = e.target.files[0]
+                        if (file) {
+                            if (file.size > 2 * 1024 * 1024) {
+                                alert('Ukuran gambar maksimal 2MB')
+                                e.target.value = ''
+                                return
+                            }
+                            setThumbnailFile(file)
+                            setThumbnailPreview(URL.createObjectURL(file))
+                        }
+                    }}
+                    className="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-600 file:text-sm file:font-medium hover:file:bg-blue-100 file:cursor-pointer"
+                />
+                <p className="text-xs text-gray-400 mt-2">Format: JPG, PNG, WEBP. Maksimal 2MB.</p>
+                {thumbnailPreview && (
+                    <button type="button"
+                        onClick={() => { setThumbnailFile(null); setThumbnailPreview(null) }}
+                        className="text-xs text-red-500 hover:text-red-700 mt-2 transition-colors">
+                        Hapus gambar
+                    </button>
+                )}
+            </div>
+        </div>
+    </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -515,32 +562,7 @@ export default function Dashboard() {
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Thumbnail
-                                        </label>
-``
-                                        {/* Preview gambar kalau ada */}
-                                        {thumbnailPreview && (
-                                            <img src={thumbnailPreview} alt="Preview"
-                                                className="w-32 h-20 object-cover rounded-lg mb-2 border border-gray-200" />
-                                        )}
-
-                                        <input
-                                            type="file"
-                                            accept="image/jpeg,image/png,image/webp"
-                                            onChange={(e) => {
-                                                const file = e.target.files[0]
-                                                if (file) {
-                                                    setThumbnailFile(file)
-                                                    // Buat preview lokal sebelum upload — tidak perlu request ke server
-                                                    setThumbnailPreview(URL.createObjectURL(file))
-                                                }
-                                            }}
-                                            className="block w-full text-sm text-gray-600 border border-gray-300 rounded-lg cursor-pointer focus:outline-none"
-                                        />
-                                        <p className="text-xs text-gray-400 mt-1">Max 2MB. Format: JPG, PNG, WEBP</p>
-                                    </div>
+                            
 
                                     <div className="flex gap-3">
                                         <button type="submit" disabled={submitting}
