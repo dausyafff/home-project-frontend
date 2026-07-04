@@ -127,7 +127,6 @@ Frontend ini dikembangkan terpisah dari backend untuk mendemonstrasikan pola **d
 
 ## Kontak
 
-- **LinkedIn:** [linkedin.com/in/USERNAME-KAMU](https://linkedin.com)
-- **Email:** email-kamu@gmail.com
-- **Instagram:** [@username-kamu](https://instagram.com)
+- **Email:** muhammaddausyaf@gmail.com
+- **Instagram:** [@dusyaf\_](https://instagram.com)
 - **GitHub:** [@dausyafff](https://github.com/dausyafff)
