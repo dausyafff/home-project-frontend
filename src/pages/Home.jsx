@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import GlobalSearch from '../components/GlobalSearch'
 
 export default function Home() {
     const { token, user } = useAuth()
@@ -9,7 +10,7 @@ export default function Home() {
             <div className="max-w-4xl mx-auto px-6 py-20">
 
                 {token ? (
-                    // ── Sudah login: tampilan admin ───────────────
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // ── Sudah login: tampilan admin ───────────────
                     <div>
                         {/* Greeting personal */}
                         <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm mb-8">
@@ -72,6 +73,9 @@ export default function Home() {
                     // ── Belum login: tampilan publik ──────────────
                     <div>
                         {/* Hero */}
+                        <div className="mt-10">
+                            <GlobalSearch />
+                        </div>
                         <div className="text-center mb-16">
                             <div className="inline-block bg-blue-50 text-blue-600 text-sm px-4 py-1.5 rounded-full mb-4">
                                 Available for work 🟢

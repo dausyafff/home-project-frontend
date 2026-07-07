@@ -15,6 +15,7 @@ export default function App() {
         <AuthProvider>
             <BrowserRouter>
                 <Navbar />
+                <h1>Dausyaf Tes</h1>
                 <Routes>
                     {/* Public */}
                     <Route path="/"                  element={<Home />} />

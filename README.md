@@ -1,9 +1,9 @@
 # Dausyaf Portfolio — Frontend
 
-Single Page Application untuk personal portfolio, dibangun dengan React dan Tailwind CSS. Mengonsumsi REST API dari [dausyaf-backend](https://github.com/dausyafff/dausyaf-backend) untuk menampilkan dan mengelola projects, skills, dan blog posts.
+Single Page Application untuk personal portfolio, dibangun dengan React dan Tailwind CSS. Mengonsumsi REST API dari [dausyaf-backend](https://github.com/dausyafff/home-project-backend) untuk menampilkan dan mengelola projects, skills, dan blog posts.
 
 🔗 **Live Demo:** _(akan ditambahkan setelah deploy)_
-🔗 **Backend repo:** [dausyaf-backend](https://github.com/dausyafff/dausyaf-backend)
+🔗 **Backend repo:** [dausyaf-backend](https://github.com/dausyafff/home-project-backend)
 
 ---
 
