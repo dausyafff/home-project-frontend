@@ -9,6 +9,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword  from './pages/ResetPassword'
 
 export default function App() {
     return (
@@ -33,6 +35,9 @@ export default function App() {
 
                     {/* 404 */}
                     <Route path="*" element={<NotFound />} />
+
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/reset-password"  element={<ResetPassword />} />
                 </Routes>
             </BrowserRouter>
         </AuthProvider>

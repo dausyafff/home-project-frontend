@@ -13,6 +13,12 @@ export default function Login() {
     const navigate    = useNavigate()
     const [searchParams] = useSearchParams()
 
+        // Tambah state untuk pesan sukses:
+    const [successMessage, setSuccessMessage] = useState(
+        searchParams.get('reset') === 'success'
+            ? 'Password berhasil direset! Silakan login dengan password baru.'
+            : null
+    )
     // Cek kalau diarahkan ke sini karena token expired
     useEffect(() => {
         if (searchParams.get('expired') === 'true') {
@@ -51,7 +57,11 @@ export default function Login() {
                         {error}
                     </div>
                 )}
-
+                {successMessage && (
+                    <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                        {successMessage}
+                    </div>
+                )}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -72,6 +82,13 @@ export default function Login() {
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
+                    </div>
+                    {/* Taruh di bawah field password, sebelum tombol submit */}
+                    <div className="flex justify-end">
+                        <Link to="/forgot-password"
+                            className="text-sm text-blue-500 hover:underline">
+                            Lupa password?
+                        </Link>
                     </div>
                     <button type="submit" disabled={loading}
                         className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white py-2 rounded-lg font-medium transition-colors">
