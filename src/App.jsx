@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword  from './pages/ResetPassword'
+import AuthCallback from './pages/AuthCallback'
 
 export default function App() {
     return (
@@ -25,6 +26,7 @@ export default function App() {
                     <Route path="/projects/:slug"    element={<ProjectDetail />} />
                     <Route path="/login"             element={<Login />} />
                     <Route path="/register"          element={<Register />} />
+                    <Route path="/auth/callback"     element={<AuthCallback />} />
 
                     {/* Protected */}
                     <Route path="/dashboard" element={
